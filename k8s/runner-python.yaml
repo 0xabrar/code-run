@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coderunner-runner-python
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: coderunner-runner-python
+  template:
+    metadata:
+      labels:
+        app: coderunner-runner-python
+    spec:
+      containers:
+      - name: runner-python
+        image: coderunner/runner-python:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DISPATCHER_URL
+          value: "http://coderunner-dispatcher"
+        - name: LANGUAGE
+          value: "python"
+        resources:
+          limits:
+            cpu: "250m"
+            memory: "256Mi" 

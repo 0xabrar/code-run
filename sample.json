@@ -1,0 +1,10 @@
+{
+  "language": "go",
+  "code": "package main\nimport (\n    \"bufio\"\n    \"fmt\"\n    \"os\"\n)\nfunc main(){\n    in:=bufio.NewReader(os.Stdin)\n    var a []int\n    for{var x int;if _,err:=fmt.Fscan(in,&x);err!=nil{break};a=append(a,x)}\n    l,r,max:=0,len(a)-1,0\n    for l<r{\n        h:=a[l];if a[r]<h{h=a[r]}\n        area:=h*(r-l);if area>max{max=area}\n        if a[l]<a[r]{l++}else{r--}\n    }\n    fmt.Println(max)\n}",
+  "tests": [
+    {
+      "stdin": "1 8 6 2 5 4 8 3 7\n",
+      "expected": "49\n"
+    }
+  ]
+}

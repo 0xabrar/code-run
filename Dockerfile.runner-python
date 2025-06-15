@@ -1,0 +1,14 @@
+FROM golang:1.22 AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o runner ./cmd/runner
+
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y git build-essential flex bison libprotobuf-dev protobuf-compiler libnl-3-dev libnl-genl-3-dev libnl-route-3-dev pkg-config zlib1g-dev && \
+    git clone https://github.com/google/nsjail /tmp/nsjail && \
+    make -C /tmp/nsjail && install -m 755 /tmp/nsjail/nsjail /usr/sbin/nsjail && \
+    rm -rf /var/lib/apt/lists/* /tmp/nsjail
+COPY --from=builder /app/runner /runner
+ENV LANGUAGE=python
+ENV DISPATCHER_URL=http://coderunner-dispatcher
+ENTRYPOINT ["/runner"] 

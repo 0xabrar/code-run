@@ -1,0 +1,12 @@
+FROM golang:1.22 AS builder
+WORKDIR /app
+COPY . .
+RUN go build -o runner ./cmd/runner
+
+FROM golang:1.22
+RUN apt-get update && apt-get install -y nsjail && rm -rf /var/lib/apt/lists/*
+WORKDIR /
+COPY --from=builder /app/runner /runner
+ENV LANGUAGE=go
+ENV DISPATCHER_URL=http://coderunner-dispatcher
+ENTRYPOINT ["/runner"] 

@@ -1,0 +1,19 @@
+{
+    "defaultAction": "SCMP_ACT_KILL",
+    "syscalls": [
+        {
+            "names": [
+                "read",
+                "write",
+                "exit",
+                "futex",
+                "close",
+                "brk",
+                "mmap",
+                "munmap",
+                "rt_sigreturn"
+            ],
+            "action": "SCMP_ACT_ALLOW"
+        }
+    ]
+}

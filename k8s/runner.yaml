@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coderunner-runner
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: coderunner-runner
+  template:
+    metadata:
+      labels:
+        app: coderunner-runner
+    spec:
+      containers:
+      - name: runner
+        image: coderunner/runner:latest
+        env:
+        - name: DISPATCHER_URL
+          value: "http://coderunner-dispatcher"
+        resources:
+          limits:
+            cpu: "250m"
+            memory: "256Mi" 

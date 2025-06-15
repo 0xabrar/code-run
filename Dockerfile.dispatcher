@@ -1,0 +1,10 @@
+FROM golang:1.22 AS builder
+WORKDIR /app
+COPY . .
+ENV CGO_ENABLED=0
+RUN go build -ldflags "-s -w" -o dispatcher ./cmd/dispatcher
+
+FROM gcr.io/distroless/static
+COPY --from=builder /app/dispatcher /dispatcher
+EXPOSE 8080
+ENTRYPOINT ["/dispatcher"] 

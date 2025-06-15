@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coderunner-dispatcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coderunner-dispatcher
+  template:
+    metadata:
+      labels:
+        app: coderunner-dispatcher
+    spec:
+      containers:
+      - name: dispatcher
+        image: coderunner/dispatcher:latest
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coderunner-dispatcher
+spec:
+  selector:
+    app: coderunner-dispatcher
+  ports:
+  - port: 80
+    targetPort: 8080 
